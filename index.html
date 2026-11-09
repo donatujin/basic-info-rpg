@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#10182d">
+  <meta name="description" content="冒険しながら基本情報技術者試験を学ぶRPG学習アプリ">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./icon.svg">
+  <link rel="stylesheet" href="./style.css">
+  <title>基本情報クエスト</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand"><div class="brand-mark">⚔</div><div><strong>基本情報クエスト</strong><small>ITエンジニアへの道</small></div></div>
+      <button class="icon-btn" id="settingsBtn" aria-label="設定">⚙</button>
+    </header>
+
+    <main>
+      <section class="hero panel">
+        <div class="hero-art" aria-hidden="true"><span class="orb orb-a"></span><span class="orb orb-b"></span><span class="pixel-sword">⚔️</span><span class="mountain">◆</span></div>
+        <div class="hero-copy">
+          <div class="eyebrow">YOUR ADVENTURE</div>
+          <h1>知識を集めて、<br>冒険を進めよう。</h1>
+          <p>毎日の小さな挑戦が、合格への経験値になる。</p>
+        </div>
+      </section>
+
+      <section class="stats panel">
+        <div class="stats-head"><div><span class="muted">冒険者ランク</span><h2 id="levelName">Lv.2 見習いエンジニア</h2></div><div class="streak"><span>🔥</span><b id="streak">8</b><small>連勝</small></div></div>
+        <div class="xp-line"><strong><span id="xp">140</span> XP</strong><span id="nextXp">次のレベルまで60 XP</span></div>
+        <div class="progress"><i id="xpBar" style="width:40%"></i></div>
+        <div class="stat-grid"><div><b id="correct">8</b><small>正解</small></div><div><b id="wrong">0</b><small>不正解</small></div><div><b id="accuracy">100%</b><small>正答率</small></div></div>
+      </section>
+
+      <section class="quest panel">
+        <div class="section-title"><div><span class="eyebrow">CONTINUE QUEST</span><h2>冒険を続ける</h2></div><span class="chapter-tag" id="chapterTag">第1章</span></div>
+        <div class="quest-card">
+          <div class="quest-icon">📜</div>
+          <div class="quest-info"><b id="questTitle">論理演算の遺跡</b><span id="questSub">第9問 · OR（論理和）</span><small>前回の続きから再開できます</small></div>
+          <span class="quest-arrow">›</span>
+        </div>
+        <button class="primary-btn" id="startBtn">冒険を再開する <span>→</span></button>
+      </section>
+
+      <section class="two-cards">
+        <button class="menu-card panel" id="reviewBtn"><span class="menu-icon">🧭</span><b>苦手分野</b><small>間違えた問題を復習</small></button>
+        <button class="menu-card panel" id="historyBtn"><span class="menu-icon">📚</span><b>冒険の記録</b><small>学習履歴を確認</small></button>
+      </section>
+      <section class="skills panel"><div class="section-title"><div><span class="eyebrow">UNLOCKED SKILLS</span><h2>習得したスキル</h2></div><span class="count" id="skillCount">5</span></div><div class="skill-list" id="skills"></div></section>
+    </main>
+    <nav class="bottom-nav"><button class="active">🏰<small>ホーム</small></button><button id="navQuest">⚔️<small>冒険</small></button><button id="navReview">🧠<small>復習</small></button><button id="navRecord">📖<small>記録</small></button></nav>
+  </div>
+
+  <dialog id="questionDialog" class="modal">
+    <div class="modal-head"><div><span class="eyebrow" id="qStage">STAGE 1-9</span><h2 id="qTitle">第9問：論理演算 OR</h2></div><button class="icon-btn close" data-close="questionDialog">✕</button></div>
+    <div class="question-meta"><span class="chapter-tag" id="qCategory">論理演算</span><span class="reward">報酬 +10 XP</span></div>
+    <p class="question-text" id="qText"></p>
+    <div class="choices" id="choices"></div>
+    <div class="hint" id="hint"></div>
+    <button class="primary-btn" id="submitAnswer" disabled>回答する →</button>
+    <div id="result" class="result hidden"></div>
+    <button class="secondary-btn hidden" id="nextQuestion">次の問題へ →</button>
+  </dialog>
+
+  <dialog id="reviewDialog" class="modal">
+    <div class="modal-head"><div><span class="eyebrow">TRAINING</span><h2>苦手分野</h2></div><button class="icon-btn close" data-close="reviewDialog">✕</button></div>
+    <div id="reviewContent"></div>
+  </dialog>
+  <dialog id="historyDialog" class="modal">
+    <div class="modal-head"><div><span class="eyebrow">ADVENTURE LOG</span><h2>冒険の記録</h2></div><button class="icon-btn close" data-close="historyDialog">✕</button></div>
+    <div id="historyContent"></div>
+  </dialog>
+  <dialog id="settingsDialog" class="modal">
+    <div class="modal-head"><div><span class="eyebrow">SETTINGS</span><h2>設定</h2></div><button class="icon-btn close" data-close="settingsDialog">✕</button></div>
+    <p class="muted">学習データはこの端末のブラウザ内に保存されます。</p>
+    <label class="field-label" for="apiEndpoint">AI解説APIの接続先（任意）</label>
+    <input id="apiEndpoint" class="text-input" placeholder="例：https://your-domain.example/api/tutor">
+    <p class="tiny">APIキーはここに入力しないでください。APIキーはサーバー側で管理します。</p>
+    <button class="primary-btn" id="saveSettings">設定を保存</button>
+    <button class="secondary-btn" id="exportBtn">学習データをバックアップ</button>
+    <label class="secondary-btn file-label">バックアップを復元<input type="file" id="importFile" accept="application/json"></label>
+    <button class="danger-btn" id="resetBtn">学習データを初期化</button>
+    <div id="aiStatus" class="tiny"></div>
+  </dialog>
+
+  <script src="./app.js"></script>
+</body>
+</html>
