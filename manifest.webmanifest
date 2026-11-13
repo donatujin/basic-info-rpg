@@ -1,18 +1,17 @@
 {
-  "name": "基本情報クエスト",
+  "name": "基本情報RPG",
   "short_name": "基本情報RPG",
   "start_url": "./",
-  "scope": "./",
   "display": "standalone",
-  "background_color": "#0b1120",
-  "theme_color": "#10182d",
+  "background_color": "#0b1220",
+  "theme_color": "#101827",
   "lang": "ja",
   "icons": [
     {
       "src": "./icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
